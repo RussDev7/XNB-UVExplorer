@@ -4,7 +4,7 @@ A lightweight WinForms tool for **inspecting & slicing XNB texture sheets**.
 (ideal for Terraria modding or any XNA/MonoGame asset work).
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d429cf7d-ee4b-419c-b4c9-8c20cc78a260" width="900" alt="Main window screenshot">
+  <img src="https://github.com/user-attachments/assets/5130c74c-4143-4e2d-9a48-2e019e1fb364" width="900" alt="Main window screenshot">
 </p>
 
 ---
@@ -23,6 +23,7 @@ A lightweight WinForms tool for **inspecting & slicing XNB texture sheets**.
 
 ## 🛠️ Prerequisites
 * **Windows** (x86 / x64)
+* **XNA Framework Redistributable 4.0**
 * **.NET Framework 4.8** or newer  
   *(for build-from-source: Visual Studio 2019+ / `dotnet msbuild`)*
 
