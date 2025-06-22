@@ -21,6 +21,8 @@ namespace XNBUVExplorer
 
         private float ZoomScale => Zoom_TrackBar.Value / 1.0f;
         private readonly List<Rectangle> _detectedTiles = new List<Rectangle>();
+        private Rectangle _highlightTile = Rectangle.Empty;                                                          // Texel-space rectangle.
+        private readonly System.Windows.Forms.Timer _flashTimer = new System.Windows.Forms.Timer { Interval = 800 }; // Highlight fades.
         private int CanvasMargin;
 
         #endregion
@@ -60,6 +62,8 @@ namespace XNBUVExplorer
             ColumnSorting_RadioButton.CheckedChanged += (s, e) => { XnbView_Panel.Invalidate(); FillTextureInfoGrid(); };
             RowSorting_RadioButton.CheckedChanged += (s, e) => { XnbView_Panel.Invalidate(); FillTextureInfoGrid(); };
             CopyData_Button.Click += CopyGrid_Button_Click;
+            TextureInfo_Grid.CellDoubleClick += TextureInfo_Grid_CellDoubleClick;
+            _flashTimer.Tick += (s, e) => { _highlightTile = Rectangle.Empty; _flashTimer.Stop(); XnbView_Panel.Invalidate(); };
 
             // Update initial labels.
             Zoom_Label.Text = $"Zoom: {Zoom_TrackBar.Value * 100}%";
@@ -105,6 +109,52 @@ namespace XNBUVExplorer
                 MessageBox.Show("Data copied to the clipboard successfully.");
         }
 
+        private void TextureInfo_Grid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return; // Header row.
+
+            // 1) Parse the “UV” column (expected “x,y”).
+            var uvText = TextureInfo_Grid.Rows[e.RowIndex].Cells[0].Value?.ToString();
+            if (string.IsNullOrEmpty(uvText) || !uvText.Contains(",")) return;
+
+            var parts = uvText.Split(',');
+            if (!int.TryParse(parts[0], out int u) || !int.TryParse(parts[1], out int v))
+                return;
+
+            // 2) Build a texel-space rectangle for this tile.
+            int tileW = (int)TileU_NumericUpDown.Value;
+            int tileH = (int)TileV_NumericUpDown.Value;
+
+            _highlightTile = new Rectangle(u, v, tileW, tileH); // Remember for painting.
+
+            // 3) Calculate *panel* coordinates and scroll there.
+            float scale = ZoomScale;
+
+            // Same offsets you use in Paint().
+            int scaledW = (int)(_bitmap.Width * scale);
+            int scaledH = (int)(_bitmap.Height * scale);
+            int extraCx = Math.Max((XnbView_Panel.ClientSize.Width - scaledW) / 2, 0);
+            int extraCy = Math.Max((XnbView_Panel.ClientSize.Height - scaledH) / 2, 0);
+            int offsetX = CanvasMargin + extraCx;
+            int offsetY = CanvasMargin + extraCy;
+
+            // Where is the rectangle’s top-left in panel coords?
+            int targetX = (int)(u * scale) + offsetX;
+            int targetY = (int)(v * scale) + offsetY;
+
+            // Scroll so that the tile is near the centre of the viewport.
+            int viewW = XnbView_Panel.ClientSize.Width;
+            int viewH = XnbView_Panel.ClientSize.Height;
+            int newScrollX = Math.Max(0, targetX - viewW / 2);
+            int newScrollY = Math.Max(0, targetY - viewH / 2);
+
+            // Setting AutoScrollPosition requires NEGATIVE values.
+            XnbView_Panel.AutoScrollPosition = new Point(newScrollX, newScrollY);
+
+            // 4) Repaint and start “flash” timer.
+            XnbView_Panel.Invalidate();
+            _flashTimer.Start();
+        }
         #endregion
 
         #region UI Events
@@ -244,8 +294,22 @@ namespace XNBUVExplorer
                     }
                 }
             }
-        }
 
+            // hHghlight tiles (if any).
+            if (!_highlightTile.IsEmpty)
+            {
+                using (var pen = new Pen(Color.Lime, 2f))
+                {
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    var r = new RectangleF(
+                        _highlightTile.X * scale,
+                        _highlightTile.Y * scale,
+                        _highlightTile.Width * scale,
+                        _highlightTile.Height * scale);
+                    g.DrawRectangle(pen, r.X, r.Y, r.Width, r.Height);
+                }
+            }
+        }
         #endregion
 
         #region Helpers
