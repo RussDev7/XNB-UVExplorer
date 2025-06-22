@@ -6,7 +6,7 @@
 @ECHO OFF
 
 Rem | Set Params
-Set "VersionPrefix=1.1.0.0"
+Set "VersionPrefix=1.1.1.0"
 Set "filename=XNBUVExplorer-%VersionPrefix%"
 
 Rem | Put the expected location of vswhere into a variable.
