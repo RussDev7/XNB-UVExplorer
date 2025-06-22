@@ -164,7 +164,7 @@
             this.XnbView_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.XnbView_Panel.Location = new System.Drawing.Point(0, 109);
             this.XnbView_Panel.Name = "XnbView_Panel";
-            this.XnbView_Panel.Size = new System.Drawing.Size(719, 552);
+            this.XnbView_Panel.Size = new System.Drawing.Size(709, 552);
             this.XnbView_Panel.TabIndex = 0;
             this.XnbView_Panel.Paint += new System.Windows.Forms.PaintEventHandler(this.XnbView_Panel_Paint);
             // 
@@ -195,11 +195,11 @@
             this.TextureInfo_Grid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TextureInfo_Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TextureInfo_Grid.Location = new System.Drawing.Point(718, 109);
+            this.TextureInfo_Grid.Location = new System.Drawing.Point(708, 109);
             this.TextureInfo_Grid.Name = "TextureInfo_Grid";
             this.TextureInfo_Grid.ReadOnly = true;
             this.TextureInfo_Grid.RowHeadersVisible = false;
-            this.TextureInfo_Grid.Size = new System.Drawing.Size(180, 552);
+            this.TextureInfo_Grid.Size = new System.Drawing.Size(190, 552);
             this.TextureInfo_Grid.TabIndex = 0;
             // 
             // TextureDetectionSettings_GroupBox

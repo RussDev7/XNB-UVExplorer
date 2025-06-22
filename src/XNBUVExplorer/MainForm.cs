@@ -21,8 +21,7 @@ namespace XNBUVExplorer
 
         private float ZoomScale => Zoom_TrackBar.Value / 1.0f;
         private readonly List<Rectangle> _detectedTiles = new List<Rectangle>();
-
-        private readonly int CanvasMargin = 30;
+        private int CanvasMargin;
 
         #endregion
 
@@ -77,7 +76,7 @@ namespace XNBUVExplorer
 
             // Update margin + add hook.
             CanvasMargin = (int)CanvasMargin_NumericUpDown.Value;
-            CanvasMargin_NumericUpDown.ValueChanged += (s, e) => XnbView_Panel.Invalidate();
+            CanvasMargin_NumericUpDown.ValueChanged += (s, e) => { CanvasMargin = (int)CanvasMargin_NumericUpDown.Value; XnbView_Panel.Invalidate(); };
         }
 
         #endregion
