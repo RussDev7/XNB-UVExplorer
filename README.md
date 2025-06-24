@@ -97,5 +97,5 @@ Contributions welcome! Open an issue or a PR.
 
 ## 🤝 License
 
-MIT © 2025 John Kens  
+GPL © 2025 RussDev7 
 See [`LICENSE`](LICENSE) for details.
