@@ -97,5 +97,5 @@ Contributions welcome! Open an issue or a PR.
 
 ## 🤝 License
 
-GPL © 2025 RussDev7 
+GPL © 2025 RussDev7  
 See [`LICENSE`](LICENSE) for details.
